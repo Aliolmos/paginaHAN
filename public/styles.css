@@ -2500,3 +2500,147 @@ img {
   padding-left: 1rem;
   padding-right: 1rem;
 }
+/* ===== FIX MOBILE RESPONSIVE ===== */
+
+/* Evita desbordes horizontales */
+body {
+  overflow-x: hidden;
+}
+
+/* ===== HERO ===== */
+@media (max-width: 768px) {
+  .hero-container {
+    padding: 3rem 1rem;
+  }
+
+  .hero-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .hero-title {
+    font-size: 2.2rem;
+    text-align: center;
+  }
+
+  .hero-subtitle,
+  .hero-quote {
+    text-align: center;
+  }
+
+  .hero-buttons {
+    justify-content: center;
+  }
+}
+
+/* ===== BOOK HERO ===== */
+@media (max-width: 768px) {
+  .book-wrapper {
+    transform: scale(0.8);
+  }
+}
+
+@media (max-width: 480px) {
+  .book-wrapper {
+    transform: scale(0.65);
+  }
+}
+
+/* ===== ABOUT ===== */
+@media (max-width: 768px) {
+  .about-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .about-image-container {
+    width: 100%;
+    max-width: 300px;
+    height: auto;
+    aspect-ratio: 3/5;
+  }
+
+  .about-image-frame,
+  .about-image-frame-outer {
+    display: none;
+  }
+
+  .about-content {
+    text-align: center;
+  }
+
+  .about-stats {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ===== BOOK SECTION ===== */
+@media (max-width: 768px) {
+  .book-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .book-flip-container {
+    width: 100%;
+    max-width: 260px;
+    height: auto;
+    aspect-ratio: 3/4;
+  }
+}
+
+/* ===== SHOP ===== */
+@media (max-width: 768px) {
+  .shop-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .product-image {
+    width: 100%;
+    height: auto;
+  }
+}
+
+/* ===== MODAL ===== */
+@media (max-width: 768px) {
+  .product-modal {
+    padding: 1rem;
+  }
+
+  .modal-content {
+    max-height: 95vh;
+  }
+
+  .modal-grid {
+    flex-direction: column;
+  }
+
+  .modal-image {
+    width: 100%;
+    max-width: 300px;
+  }
+}
+
+/* ===== NAV ===== */
+@media (max-width: 768px) {
+  .nav-container {
+    padding: 0 0.5rem;
+  }
+}
+
+/* ===== CONTACT ===== */
+@media (max-width: 768px) {
+  .contact-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ===== TEXT OVERFLOW FIX ===== */
+h1, h2, h3, p, span {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+/* ===== BUTTON FIX ===== */
+.btn {
+  text-align: center;
+  white-space: normal;
+}
