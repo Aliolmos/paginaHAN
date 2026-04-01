@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HAN - Poesias Musicales | Silvana A. Monelli</title>
+  <meta name="description" content="HAN - Una Argentina con alma y corazon coreano. Poesias musicales bilingues con QR para escuchar las canciones.">
+  <link rel="stylesheet" href="./styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body> 
+  <!-- Sakura Petals Animation -->
+  <div id="sakura-container" class="sakura-container" aria-hidden="true"></div>
+
+  <!-- Music Player -->
+  <button id="music-btn" class="music-btn" aria-label="Reproducir musica">
+    <svg id="music-icon-off" class="music-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+      <line x1="23" y1="9" x2="17" y2="15"></line>
+      <line x1="17" y1="9" x2="23" y2="15"></line>
+    </svg>
+    <svg id="music-icon-on" class="music-icon hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+      <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+    </svg>
+  </button>
+  <audio id="background-music" loop>
+    <source src="./music/poema-14.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- Navigation -->
+  <header class="nav-header">
+    <nav class="nav-container">
+      <a href="#home" class="nav-logo">
+        HAN <span class="nav-logo-subtitle" id="nav-subtitle">| Poesias</span>
+      </a>
+      
+      <div class="nav-links" id="nav-links">
+        <a href="#home" data-es="Inicio" data-kr="홈">Inicio</a>
+        <a href="#about" data-es="Sobre la Autora" data-kr="저자 소개">Sobre la Autora</a>
+        <a href="#book" data-es="Sobre el Libro" data-kr="책 소개">Sobre el Libro</a>
+        <a href="#shop" data-es="Tienda" data-kr="상점">Tienda</a>
+        <a href="#reviews" data-es="Reseñas" data-kr="리뷰">Reseñas</a>
+        <a href="#contact" data-es="Contacto" data-kr="연락처">Contacto</a>
+      </div>
+      
+      <div class="nav-actions">
+        <button id="lang-toggle" class="lang-btn">
+          <svg class="globe-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="2" y1="12" x2="22" y2="12"></line>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+          </svg>
+          <span id="lang-text">ES | 한국어</span>
+        </button>
+        
+        <a href="#shop" class="cart-btn" id="cart-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="9" cy="21" r="1"></circle>
+            <circle cx="20" cy="21" r="1"></circle>
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+          </svg>
+          <span id="cart-count" class="cart-count hidden">0</span>
+        </a>
+        
+        <button id="mobile-menu-btn" class="mobile-menu-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Mobile Menu -->
+  <div id="mobile-menu" class="mobile-menu">
+    <button id="mobile-menu-close" class="mobile-menu-close">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </button>
+    <div class="mobile-menu-links">
+      <a href="#home" data-es="Inicio" data-kr="홈">Inicio</a>
+      <a href="#about" data-es="Sobre la Autora" data-kr="저자 소개">Sobre la Autora</a>
+      <a href="#book" data-es="Sobre el Libro" data-kr="책 소개">Sobre el Libro</a>
+      <a href="#shop" data-es="Tienda" data-kr="상점">Tienda</a>
+      <a href="#reviews" data-es="Resenas" data-kr="리뷰">Reseñas</a>
+      <a href="#contact" data-es="Contacto" data-kr="연락처">Contacto</a>
+    </div>
+  </div>
+
+  <main>
+    <!-- Hero Section -->
+    <section id="home" class="hero-section">
+      <div class="hero-bg"></div>
+      <div class="hero-container">
+        <div class="hero-grid">
+          <!-- Text Content -->
+          <div class="hero-content fade-in">
+            <div class="hero-text">
+              <h1 class="hero-title" data-es="HAN" data-kr="한">HAN</h1>
+              <p class="hero-subtitle" data-es="Una Argentina con alma y corazon coreano" data-kr="(한국의 마음을 품은 아르헨티나인)">Una Argentina con alma y corazon coreano</p>
+            </div>
+            
+            <blockquote class="hero-quote" data-es='"Poesias Musicales - Cada poema tiene un QR para escuchar la version cantada"' data-kr='"음악 시집 - 각 시에는 노래로 감상할 수 있는 QR 코드가 포함되어 있습니다"'>
+              "Poesias Musicales - Cada poema tiene un QR para escuchar la version cantada"
+            </blockquote>
+            
+            <div class="hero-buttons">
+              <a href="#shop" class="btn btn-primary" data-es="Explorar Coleccion" data-kr="컬렉션 탐색">
+                Explorar Coleccion
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="btn-icon">
+                  <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+              </a>
+              <button id="book-preview-btn" class="btn btn-outline" data-es="Vista Previa" data-kr="미리보기">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="btn-icon-left">
+                  <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                  <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                </svg>
+                Vista Previa
+              </button>
+            </div>
+          </div>
+          
+          <!-- Interactive Book -->
+          <div class="hero-book fade-in delay-300">
+            <div class="book-wrapper" id="book-wrapper">
+              <div class="book-container">
+                <!-- Book Cover -->
+                <div class="book-cover" id="book-cover">
+                  <div class="book-front">
+                    <img src="./books/han-cover.jpg" alt="HAN - Tapa del libro" class="book-image">
+                  </div>
+                  <div class="book-back">
+                    <div class="solapa-strip">
+                      <img src="./books/solapa.jpg" alt="Solapa del libro" class="solapa-image">
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- Book Pages -->
+                <div class="book-pages" id="book-pages">
+                  <div class="book-pages-content">
+                    <h3 class="poem-title" data-es="EL COMIENZO DE UN AMOR ETERNO" data-kr="사랑 이야기">EL COMIENZO DE UN AMOR ETERNO</h3>
+                    <div class="poem-divider"></div>
+                    <p class="poem-text" id="poem-text">Donde verdades y secretos se entrelazaron,
+sus corazones danzaron antes del fin de cada cancion,
+y sus almas se unieron hasta que el dia se despidio.
+
+Voraces contra las corrientes del mar,
+audaces frente al destino,
+sus vivencias y memorias esperan ser contadas,
+una galaxia de sentimientos los inunda.
+
+Esa historia solo esta escrita con tinta,
+la clave de sol marca el inicio del pentagrama,
+notas blancas y negras se deslizan,
+como las mas bellas melodias que emergen de su union,
+cuando susurran "te amo" y el tiempo parece detenerse.</p>
+                    
+                    <div class="qr-section">
+                      <p class="qr-text" data-es="Escanea el QR para escuchar un adelanto de los poemas convertidos en canciones" data-kr="QR 코드를 스캔하여 시를 노래로 들어보세요">Escanea el QR para escuchar un adelanto de los poemas convertidos en canciones</p>
+                      <div class="qr-container">
+                        <img src="./qr.png" alt="QR Code" class="qr-image">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="page-lines">
+                    <div class="page-line"></div>
+                    <div class="page-line"></div>
+                    <div class="page-line"></div>
+                    <div class="page-line"></div>
+                    <div class="page-line"></div>
+                    <div class="page-line"></div>
+                    <div class="page-line"></div>
+                    <div class="page-line"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="book-shadow"></div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Scroll Indicator -->
+        <div class="scroll-indicator">
+          <div class="scroll-mouse">
+            <div class="scroll-wheel"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about-section">
+      <div class="decorative-circle about-circle-1"></div>
+      <div class="decorative-circle about-circle-2"></div>
+      
+      <div class="section-container">
+        <div class="about-grid">
+          <!-- Author Image -->
+          <div class="about-image-wrapper fade-in-up">
+            <div class="about-image-container">
+              <img src="./author.jpg" alt="Silvana A. Monelli" class="about-image">
+            </div>
+            <div class="about-image-frame"></div>
+            <div class="about-image-frame-outer"></div>
+            <div class="floating-petal about-petal"></div>
+          </div>
+          
+          <!-- About Content -->
+          <div class="about-content fade-in-up delay-200">
+            <h2 class="section-title" data-es="Sobre la Autora" data-kr="저자 소개">Sobre la Autora</h2>
+            
+            <div class="about-bio" id="about-bio">
+              <p>Silvana A. Monelli nacio en Cordoba, Argentina. Esta felizmente casada y es madre de cuatro hijos. Su familia es su refugio de amor. La autora comparte el amor a la medicina y a la poesia, disfrutando del arte de escribir poemas.</p>
+              <p>Silvana nos presenta el primer libro de esta coleccion de POESIAS MUSICALES llamado "HAN", que tienen la peculiaridad que estan escrito en español y coreano, cada poema tiene un QR a donde se puede escuchar la version cantada, buscando eliminar barreras, ofreciendo una experiencia sensorial completa tanto para lectores como para las personas con discapacidad visual que deseen sumergirse en sus melodias.</p>
+              <p>La autora se encuentra trabajando para lanzar los proximos libros de esta coleccion de una argentina con alma y corazon coreano de la mano de Editorial Gema Azul.</p>
+            </div>
+            
+            <blockquote class="about-quote">
+              <div class="quote-bar"></div>
+              <p data-es='"En el encuentro de dos culturas descubri que lo esencial no se ve ni se oye... se siente; y es en ese sentir donde el alma aprende a sanar sus huellas mas ocultas."' data-kr='"두 문화의 만남 속에서 나는 본질적인 것은 보이지도, 들리지도 않으며… 느껴진다는 것을 깨달았다. 그리고 바로 그 느껴짐 속에서 영혼은 가장 깊이 숨겨진 흔적을 치유하는 법을 배운다."'>"En el encuentro de dos culturas descubri que lo esencial no se ve ni se oye... se siente; y es en ese sentir donde el alma aprende a sanar sus huellas mas ocultas."</p>
+            </blockquote>
+            
+            <!-- Stats -->
+            <div class="about-stats">
+              <div class="stat-card">
+                <div class="stat-number">1</div>
+                <div class="stat-label" data-es="Libro" data-kr="책">Libro</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-number">80</div>
+                <div class="stat-label" data-es="Poemas" data-kr="시">Poemas</div>
+                <div class="stat-sublabel" data-es="40 ES / 40 KR" data-kr="40 스페인어 / 40 한국어">40 ES / 40 KR</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-number">2</div>
+                <div class="stat-label" data-es="Idiomas" data-kr="언어">Idiomas</div>
+              </div>
+            </div>
+            
+            <div class="coming-soon-badge">
+              <span data-es="Coleccion Proximamente" data-kr="컬렉션 출시 예정">Coleccion Proximamente</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Book Section -->
+    <section id="book" class="book-section">
+      <div class="decorative-circle book-circle"></div>
+      
+      <div class="section-container">
+        <div class="section-header fade-in-up">
+          <h2 class="section-title" data-es="¿Por que leer HAN?" data-kr="왜 『HAN』을 읽어야 할까요?">¿Por que leer HAN?</h2>
+          <div class="section-divider"></div>
+        </div>
+        
+        <div class="book-grid">
+          <!-- Rotatable Book -->
+          <div class="book-preview-wrapper fade-in-up">
+            <div class="book-preview" id="book-preview-flip">
+              <div class="book-flip-container" id="book-flip-container">
+                <div class="book-flip-front">
+                  <img src="./books/han-cover.jpg" alt="HAN - Tapa" class="book-flip-image">
+                </div>
+                <div class="book-flip-back">
+                  <img src="./books/contratapa.jpg" alt="HAN - Contratapa" class="book-flip-image">
+                </div>
+              </div>
+              <div class="book-preview-shadow"></div>
+            </div>
+            <button class="flip-btn" id="flip-btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="1 4 1 10 7 10"></polyline>
+                <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+              </svg>
+              <span data-es="Clic para girar" data-kr="클릭하여 회전">Clic para girar</span>
+            </button>
+            
+            <div class="floating-petal book-petal-1"></div>
+            <div class="floating-petal book-petal-2"></div>
+          </div>
+          
+          <!-- Book Content -->
+          <div class="book-content fade-in-up delay-200">
+            <div class="book-description" id="book-description">
+              <p>Porque es el primer libro de poemas inclusivo para personas con discapacidad visual, quienes podran acceder con a traves de un QR y escucharlos en forma de cancion. Esta innovacion parte por iniciativa de la autora, quien quiere llegar a la mayor cantidad de lectores amantes de la poesia y la musica.</p>
+              <p>En HAN, una argentina con alma y corazon coreano, se encontraran versos que acarician el alma, con poemas de amor que trascienden el corazon para inundar de ternura el aire. Silvana se ha propuesto ser esa primavera que inunda con sus versos de fragancias exquisita el aire como los cerezos en flor.</p>
+              <p>Y hacer este homenaje bilingue habla de la intencionalidad de la autora: rescatar culturas, ser puente entre Argentina y Corea del Sur. Una verdadera joya.</p>
+              <p>Los invitamos a disfrutar y saborear estos poemas de Silvana A. Monelli con Editorial Gema Azul, Cordoba, Argentina... para el mundo.</p>
+            </div>
+            
+            <!-- Themes -->
+            <div class="themes-section">
+              <h3 class="themes-title" data-es="Tematicas" data-kr="주제">Tematicas</h3>
+              <div class="themes-grid">
+                <div class="theme-card">
+                  <div class="theme-icon blue">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                      <circle cx="9" cy="7" r="4"></circle>
+                      <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                      <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                    </svg>
+                  </div>
+                  <span data-es="Familia" data-kr="가족">Familia</span>
+                </div>
+                <div class="theme-card">
+                  <div class="theme-icon pink">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                    </svg>
+                  </div>
+                  <span data-es="Amor" data-kr="사랑">Amor</span>
+                </div>
+                <div class="theme-card">
+                  <div class="theme-icon green">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+                      <polyline points="17 6 23 6 23 12"></polyline>
+                    </svg>
+                  </div>
+                  <span data-es="Superacion" data-kr="극복">Superacion</span>
+                </div>
+                <div class="theme-card">
+                  <div class="theme-icon amber">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                    </svg>
+                  </div>
+                  <span data-es="Admiracion" data-kr="존경">Admiracion</span>
+                </div>
+                <div class="theme-card">
+                  <div class="theme-icon purple">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path>
+                      <path d="M12 5 9.04 7.96a2.17 2.17 0 0 0 0 3.08v0c.82.82 2.13.85 3 .07l2.07-1.9a2.82 2.82 0 0 1 3.79 0l2.96 2.66"></path>
+                      <path d="m18 15-2-2"></path>
+                      <path d="m15 18-2-2"></path>
+                    </svg>
+                  </div>
+                  <span data-es="Dedicacion" data-kr="헌신">Dedicacion</span>
+                </div>
+                <div class="theme-card">
+                  <div class="theme-icon cyan">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <circle cx="12" cy="12" r="10"></circle>
+                      <polyline points="12 6 12 12 16 14"></polyline>
+                    </svg>
+                  </div>
+                  <span data-es="Nostalgia" data-kr="향수">Nostalgia</span>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Audience -->
+            <div class="audience-card">
+              <p data-es="Para almas sensibles que buscan encontrarse en las palabras de otro." data-kr="다른 이의 말에서 자신을 찾고자 하는 섬세한 영혼들을 위해.">Para almas sensibles que buscan encontrarse en las palabras de otro.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Shop Section -->
+    <section id="shop" class="shop-section">
+      <div class="section-container">
+        <div class="section-header fade-in-up">
+          <h2 class="section-title" data-es="Tienda" data-kr="상점">Tienda</h2>
+          <div class="section-divider"></div>
+        </div>
+        
+        <div class="shop-grid" id="shop-grid">
+          <!-- Products will be rendered by JavaScript -->
+        </div>
+        
+        <!-- Cart Sidebar -->
+        <div id="cart-sidebar" class="cart-sidebar">
+          <div class="cart-header">
+            <h3 data-es="Carrito" data-kr="장바구니">Carrito</h3>
+            <button id="cart-close" class="cart-close">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+            </button>
+          </div>
+          <div id="cart-items" class="cart-items">
+            <!-- Cart items will be rendered by JavaScript -->
+          </div>
+          <div class="cart-footer">
+            <div class="cart-total">
+              <span data-es="Total:" data-kr="합계:">Total:</span>
+              <span id="cart-total-amount">$0</span>
+            </div>
+            <button class="btn btn-primary btn-full" data-es="Proceder al Pago" data-kr="결제하기">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="btn-icon-left">
+                <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
+                <line x1="1" y1="10" x2="23" y2="10"></line>
+              </svg>
+              Proceder al Pago
+            </button>
+          </div>
+        </div>
+        <div id="cart-overlay" class="cart-overlay"></div>
+      </div>
+    </section>
+
+    <!-- Reviews Section -->
+    <section id="reviews" class="reviews-section">
+      <div class="decorative-circle reviews-circle-1"></div>
+      <div class="decorative-circle reviews-circle-2"></div>
+      
+      <div class="section-container">
+        <div class="section-header fade-in-up">
+          <h2 class="section-title" data-es="Resenas" data-kr="리뷰">Reseñas</h2>
+          <p class="section-subtitle" data-es="Lo que dicen nuestros lectores" data-kr="독자들의 이야기">Lo que dicen nuestros lectores</p>
+          <div class="section-divider"></div>
+          
+          <!-- Average Rating -->
+          <div class="average-rating">
+            <div class="stars" id="average-stars">
+              <!-- Stars rendered by JS -->
+            </div>
+            <span class="rating-number" id="average-rating">4.8</span>
+            <span class="rating-count" id="rating-count">(4 reseñas)</span>
+          </div>
+        </div>
+        
+        <div class="reviews-grid" id="reviews-grid">
+          <!-- Reviews will be rendered by JavaScript -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact-section">
+      <div class="decorative-circle contact-circle-1"></div>
+      <div class="decorative-circle contact-circle-2"></div>
+      
+      <div class="section-container">
+        <div class="section-header fade-in-up">
+          <h2 class="section-title" data-es="Contacto" data-kr="연락처">Contacto</h2>
+          <p class="section-subtitle" data-es="Me encantaria saber de ti" data-kr="여러분의 이야기를 듣고 싶습니다">Me encantaria saber de ti</p>
+          <div class="section-divider"></div>
+        </div>
+        
+        <div class="contact-grid">
+          <!-- Contact Form -->
+          <div class="contact-form-wrapper fade-in-up">
+            <form id="contact-form" class="contact-form">
+              <div class="form-group">
+                <label for="name" data-es="Nombre" data-kr="이름">Nombre</label>
+                <input type="text" id="name" name="name" required placeholder="Tu nombre">
+              </div>
+              <div class="form-group">
+                <label for="email" data-es="Correo Electronico" data-kr="이메일">Correo Electronico</label>
+                <input type="email" id="email" name="email" required placeholder="tu@email.com">
+              </div>
+              <div class="form-group">
+                <label for="message" data-es="Mensaje" data-kr="메시지">Mensaje</label>
+                <textarea id="message" name="message" rows="5" required placeholder="Escribe tu mensaje aqui..."></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary btn-full">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="btn-icon-left">
+                  <line x1="22" y1="2" x2="11" y2="13"></line>
+                  <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                </svg>
+                <span data-es="Enviar Mensaje" data-kr="메시지 보내기">Enviar Mensaje</span>
+              </button>
+            </form>
+            
+            <!-- Success Message -->
+            <div id="form-success" class="form-success hidden">
+              <div class="success-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                  <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                </svg>
+              </div>
+              <p data-es="Mensaje enviado correctamente" data-kr="메시지가 성공적으로 전송되었습니다">Mensaje enviado correctamente</p>
+            </div>
+          </div>
+          
+          <!-- Contact Info -->
+          <div class="contact-info fade-in-up delay-200">
+            <h3 class="contact-info-title" data-es="Redes Sociales" data-kr="소셜 미디어">Redes Sociales</h3>
+            <div class="social-links">
+              <a href="#" class="social-link">
+                <div class="social-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                  </svg>
+                </div>
+                <span>Instagram</span>
+              </a>
+              <a href="#" class="social-link">
+                <div class="social-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+                  </svg>
+                </div>
+                <span>Facebook</span>
+              </a>
+              <a href="#" class="social-link">
+                <div class="social-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polygon points="23 7 16 12 23 17 23 7"></polygon>
+                    <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
+                  </svg>
+                </div>
+                <span>YouTube</span>
+              </a>
+              <a href="#" class="social-link">
+                <div class="social-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M4 4l11.733 8L4 20V4z"></path>
+                    <path d="M20 4v16"></path>
+                  </svg>
+                </div>
+                <span>X</span>
+              </a>
+              <a href="mailto:contact@han-poesias.com" class="social-link">
+                <div class="social-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                    <polyline points="22,6 12,13 2,6"></polyline>
+                  </svg>
+                </div>
+                <span>Email</span>
+              </a>
+            </div>
+            
+            <!-- Quick Response Card -->
+            <div class="quick-response-card">
+              <div class="qr-card-header">
+                <div class="qr-card-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                  </svg>
+                </div>
+                <div>
+                  <h4 data-es="Respuesta Rapida" data-kr="빠른 응답">Respuesta Rapida</h4>
+                  <p data-es="En menos de 24 horas" data-kr="24시간 이내">En menos de 24 horas</p>
+                </div>
+              </div>
+              <p class="qr-card-text" data-es="Respondo personalmente a cada mensaje. No dudes en escribirme." data-kr="모든 메시지에 직접 답변드립니다. 언제든지 연락해 주세요.">Respondo personalmente a cada mensaje. No dudes en escribirme.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-logo">
+        <h3>HAN</h3>
+        <p data-es="Una Argentina con alma y corazon coreano" data-kr="한국의 마음을 품은 아르헨티나인">Una Argentina con alma y corazon coreano</p>
+      </div>
+      
+      <div class="footer-links">
+        <a href="#home" data-es="Inicio" data-kr="홈">Inicio</a>
+        <a href="#about" data-es="Sobre la Autora" data-kr="저자 소개">Sobre la Autora</a>
+        <a href="#book" data-es="Sobre el Libro" data-kr="책 소개">Sobre el Libro</a>
+        <a href="#shop" data-es="Tienda" data-kr="상점">Tienda</a>
+        <a href="#reviews" data-es="Resenas" data-kr="리뷰">Reseñas</a>
+        <a href="#contact" data-es="Contacto" data-kr="연락처">Contacto</a>
+      </div>
+      
+      <div class="footer-publisher">
+        <p class="publisher-name">Editorial Gema Azul</p>
+        <p class="publisher-location">Cordoba, Argentina</p>
+      </div>
+      
+      <div class="footer-divider"></div>
+      
+      <div class="footer-bottom">
+        <p class="footer-made">
+          <span data-es="Hecho con amor y poesia" data-kr="사랑과 시로 만들어짐">Hecho con amor y poesia</span>
+          <svg class="heart-icon" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+          </svg>
+        </p>
+        <p class="footer-copyright">
+          &copy; <span id="current-year">2026</span> Silvana A. Monelli | HAN. <span data-es="Todos los derechos reservados" data-kr="모든 권리 보유">Todos los derechos reservados</span>.
+        </p>
+      </div>
+      
+      <div class="footer-petals">
+        <div class="footer-petal" style="animation-delay: 0s;"></div>
+        <div class="footer-petal" style="animation-delay: 0.5s;"></div>
+        <div class="footer-petal" style="animation-delay: 1s;"></div>
+        <div class="footer-petal" style="animation-delay: 1.5s;"></div>
+        <div class="footer-petal" style="animation-delay: 2s;"></div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Product Detail Modal -->
+  <div id="product-modal" class="product-modal">
+    <div class="modal-content">
+      <button id="modal-close" class="modal-close">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+      <div class="modal-grid">
+        <!-- Left Column -->
+        <div class="modal-left">
+          <div class="modal-image-wrapper">
+            <img id="modal-image" src="" alt="" class="modal-image">
+          </div>
+          
+          <div class="modal-description-card">
+            <h3 data-es="Descripcion" data-kr="설명">Descripcion</h3>
+            <p id="modal-description"></p>
+          </div>
+          
+          <div class="modal-rating-card">
+            <div class="modal-rating-header">
+              <h3 data-es="Calificacion" data-kr="평점">Calificacion</h3>
+              <div class="modal-rating-stars">
+                <div class="stars" id="modal-stars"></div>
+                <span id="modal-rating">5.0</span>
+                <span id="modal-review-count">(3)</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="modal-reviews-card">
+            <h3 data-es="Comentarios" data-kr="리뷰">Comentarios</h3>
+            <div id="modal-reviews" class="modal-reviews-list"></div>
+            
+            <div class="modal-add-review">
+              <div class="review-rating-input">
+                <span data-es="Tu calificacion:" data-kr="평점:">Tu calificacion:</span>
+                <div class="review-stars" id="review-stars-input"></div>
+              </div>
+              <div class="review-input-group">
+                <textarea id="review-comment" placeholder="Escribe tu comentario..."></textarea>
+                <button id="submit-review" class="review-submit-btn">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="22" y1="2" x2="11" y2="13"></line>
+                    <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Right Column -->
+        <div class="modal-right">
+          <div id="modal-badge" class="modal-badge"></div>
+          <h2 id="modal-title" class="modal-title"></h2>
+          <p class="modal-author" data-es="por Silvana A. Monelli" data-kr="Silvana A. Monelli 저">por Silvana A. Monelli</p>
+          
+          <div class="modal-price-section">
+            <div class="modal-price">
+              <span id="modal-price">$40.000</span>
+              <span class="price-currency">ARS</span>
+            </div>
+            <div class="modal-shipping">
+              <div class="shipping-item amber">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="1" y="3" width="15" height="13"></rect>
+                  <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
+                  <circle cx="5.5" cy="18.5" r="2.5"></circle>
+                  <circle cx="18.5" cy="18.5" r="2.5"></circle>
+                </svg>
+                <span data-es="Envio segun ubicacion" data-kr="배송비 별도">Envio segun ubicacion</span>
+              </div>
+              <div class="shipping-item green">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                </svg>
+                <span data-es="Compra segura" data-kr="안전 결제">Compra segura</span>
+              </div>
+            </div>
+          </div>
+          
+          <div id="modal-features" class="modal-features"></div>
+          
+          <div class="modal-cart-section">
+            <div class="quantity-selector">
+              <span data-es="Cantidad" data-kr="수량">Cantidad</span>
+              <div class="quantity-controls">
+                <button id="qty-minus" class="qty-btn">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                  </svg>
+                </button>
+                <span id="qty-value">1</span>
+                <button id="qty-plus" class="qty-btn">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                  </svg>
+                </button>
+              </div>
+            </div>
+            
+            <button id="modal-add-cart" class="btn btn-gradient btn-full">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="btn-icon-left">
+                <circle cx="9" cy="21" r="1"></circle>
+                <circle cx="20" cy="21" r="1"></circle>
+                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+              </svg>
+              <span data-es="Agregar al Carrito" data-kr="장바구니에 담기">Agregar al Carrito</span>
+            </button>
+            
+            <div class="payment-methods">
+              <div class="payment-badge blue">Mercado Pago</div>
+              <div class="payment-badge gray">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
+                  <line x1="1" y1="10" x2="23" y2="10"></line>
+                </svg>
+                <span data-es="Tarjetas" data-kr="카드">Tarjetas</span>
+              </div>
+            </div>
+          </div>
+          
+          <div id="modal-coming-soon" class="modal-coming-soon hidden">
+            <button class="btn btn-disabled btn-full" disabled>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="btn-icon-left">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+              <span data-es="Proximamente" data-kr="곧 출시 예정">Proximamente</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="./script.js"></script>
+</body>
+</html>
