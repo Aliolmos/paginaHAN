@@ -1007,3 +1007,40 @@ document.addEventListener('DOMContentLoaded', () => {
   updateCart();
   setCurrentYear();
 });
+document.getElementById("checkout-btn").addEventListener("click", checkout);
+async function checkout() {
+  console.log("checkout funcionando");
+
+  if (cart.length === 0) {
+    alert("El carrito está vacío");
+    return;
+  }
+
+  try {
+    const response = await fetch("/api/create_preference", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        items: cart.map(item => ({
+          title: item.title,
+          price: item.price,
+          quantity: item.quantity,
+        })),
+      }),
+    });
+
+    const data = await response.json();
+
+    if (data.id) {
+      window.location.href = `https://www.mercadopago.com/checkout/v1/redirect?pref_id=${data.id}`;
+    } else {
+      alert("Error al iniciar el pago");
+    }
+
+  } catch (error) {
+    console.error(error);
+    alert("Error en el checkout");
+  }
+}
