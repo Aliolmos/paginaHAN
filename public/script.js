@@ -1011,7 +1011,7 @@ const loadMercadoPagoSDK = () => {
   const script = document.createElement('script');
   script.src = 'https://sdk.mercadopago.com/js/v2';
   script.onload = () => {
-    window.mp = new window.MercadoPago('APP_USR-aa6c9501-fd17-4d5c-bbb8-73aca9fa59b9');
+    window.mp = new window.MercadoPago('APP_USR-aa6c9501-fd17-4d5c-bbb8-73aca9fa59b9',);
   };
   document.body.appendChild(script);
 };
