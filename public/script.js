@@ -186,7 +186,7 @@ const products = [
     id: '1',
     title: 'HAN - Una Argentina con alma y corazon coreano',
     titleKr: 'HAN - 한국의 마음을 품은 아르헨티나인',
-    price: 40000,
+    price: 40,
     stock: 50,
     image: './books/han-cover.jpg',
     comingSoon: false
