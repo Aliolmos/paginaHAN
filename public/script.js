@@ -1008,7 +1008,7 @@ document.addEventListener('DOMContentLoaded', () => {
   setCurrentYear();
 });
 document.getElementById("checkout-btn").addEventListener("click", checkout);
-async function checkout() {
+function checkout() {
   console.log("checkout funcionando");
 
   if (cart.length === 0) {
@@ -1016,31 +1016,30 @@ async function checkout() {
     return;
   }
 
-  try {
-    const response = await fetch("/api/create_preference", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        items: cart.map(item => ({
-          title: item.title,
-          price: item.price,
-          quantity: item.quantity,
-        })),
-      }),
+  fetch("http://localhost:3000/create_preference", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      items: cart.map(item => ({
+        title: item.title,
+        unit_price: item.price, // ✅ CORREGIDO
+        quantity: item.quantity,
+      })),
+    }),
+  })
+    .then(res => res.json())
+    .then(data => {
+      if (data.id) {
+        window.location.href =
+          `https://www.mercadopago.com.ar/checkout/v1/redirect?pref_id=${data.id}`;
+      } else {
+        alert("Error al crear preferencia");
+      }
+    })
+    .catch(error => {
+      console.error("Error en checkout:", error);
+      alert("Error en el pago");
     });
-
-    const data = await response.json();
-
-    if (data.id) {
-      window.location.href = `https://www.mercadopago.com/checkout/v1/redirect?pref_id=${data.id}`;
-    } else {
-      alert("Error al iniciar el pago");
-    }
-
-  } catch (error) {
-    console.error(error);
-    alert("Error en el checkout");
-  }
 }
