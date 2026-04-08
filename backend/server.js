@@ -1,3 +1,5 @@
+import dotenv from "dotenv";
+dotenv.config();
 import express from "express";
 import cors from "cors";
 import pkg from "mercadopago";
@@ -9,12 +11,11 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// 🔑 CONFIG CLIENTE
+
 const client = new MercadoPagoConfig({
-  accessToken: "TU_ACCESS_TOKEN_REAL",
+  accessToken: process.env.MERCADO_PAGO_ACCESS_TOKEN = "APP_USR-5276495357019633-040808-3ca826a6c07b1b44d0f9f1b44e80d8d0-3323296654",
 });
 
-// 📌 CREATE PREFERENCE
 app.post("/create_preference", async (req, res) => {
   try {
     const preference = {
@@ -24,13 +25,16 @@ app.post("/create_preference", async (req, res) => {
         failure: "http://localhost:3000/failure",
         pending: "http://localhost:3000/pending",
       },
-      auto_return: "approved",
+      
     };
 
     const preferenceClient = new Preference(client);
     const result = await preferenceClient.create({ body: preference });
 
-    res.json({ id: result.id });
+    res.json({ 
+      id: result.id,
+      init_point: result.init_point
+    });
 
   } catch (error) {
     console.log("ERROR MP:", error);
@@ -38,7 +42,29 @@ app.post("/create_preference", async (req, res) => {
   }
 });
 
-// 🚀 SERVER
+// Servir archivos estáticos
+app.use(express.static('./'));
+
+// Ruta para servir el HTML
+app.get('/', (req, res) => {
+  res.sendFile('./index.html', { root: __dirname });
+});
+app.get("/success", (req, res) => {
+  res.send('<h1>✅ Pago exitoso!</h1><a href="/">Volver</a>');
+});
+
+app.get("/failure", (req, res) => {
+  res.send('<h1>❌ Pago fallido</h1><a href="/">Volver</a>');
+});
+
+app.get("/pending", (req, res) => {
+  res.send('<h1>⏳ Pago pendiente</h1><a href="/">Volver</a>');
+});
+
+app.post("/webhook", (req, res) => {
+  res.json({ success: true });
+});
+
 app.listen(3000, () => {
   console.log("Servidor corriendo en http://localhost:3000");
 });

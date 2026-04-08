@@ -1005,7 +1005,63 @@ document.addEventListener('DOMContentLoaded', () => {
   initModalListeners();
   initCartListeners();
   updateCart();
-  setCurrentYear();
+
+// ===== MERCADO PAGO =====
+const loadMercadoPagoSDK = () => {
+  const script = document.createElement('script');
+  script.src = 'https://sdk.mercadopago.com/js/v2';
+  script.onload = () => {
+    window.mp = new window.MercadoPago('APP_USR-1028ee87-2b78-40f1-8401-76268585aaa7');
+  };
+  document.body.appendChild(script);
+};
+
+const initCheckoutButton = () => {
+  const checkoutBtn = document.querySelector('.cart-footer .btn-primary');
+  if (!checkoutBtn) return;
+  
+  checkoutBtn.addEventListener('click', async (e) => {
+    e.preventDefault();
+    
+    if (cart.length === 0) {
+      alert('El carrito está vacío');
+      return;
+    }
+    
+    try {
+      checkoutBtn.disabled = true;
+      checkoutBtn.innerHTML = '<span>Procesando...</span>';
+      
+      const items = cart.map(item => {
+        const product = products.find(p => p.id === item.id);
+        return {
+          title: product.title,
+          quantity: item.quantity,
+          unit_price: product.price / 100,
+          description: `${product.title} x${item.quantity}`
+        };
+      });
+      
+      const response = await fetch('http://localhost:3000/create_preference', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ items })
+      });
+      
+      const data = await response.json();
+      window.location.href = data.init_point;
+      
+    } catch (error) {
+      alert('Error: ' + error.message);
+      checkoutBtn.disabled = false;
+      checkoutBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="btn-icon-left"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>Proceder al Pago';
+    }
+  });
+};
+
+loadMercadoPagoSDK();
+initCheckoutButton();
+setCurrentYear();
 });
 document.getElementById("checkout-btn").addEventListener("click", checkout);
 function checkout() {
