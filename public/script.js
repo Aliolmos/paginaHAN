@@ -1072,7 +1072,7 @@ function checkout() {
     return;
   }
 
-  fetch("http://localhost:3000/create_preference", {
+  fetch("http://localhost:3001/create_preference", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
