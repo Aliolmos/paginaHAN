@@ -1069,7 +1069,7 @@ setCurrentYear();
 document.getElementById("checkout-btn").addEventListener("click", checkout);
 function checkout() {
   console.log("checkout funcionando");
-
+  const url = window.location.origin;
   if (cart.length === 0) {
     alert("El carrito está vacío");
     return;
