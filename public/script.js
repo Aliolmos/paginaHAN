@@ -1007,6 +1007,8 @@ document.addEventListener('DOMContentLoaded', () => {
   updateCart();
 
 // ===== MERCADO PAGO =====
+const url = window.location.origin;
+
 const loadMercadoPagoSDK = () => {
   const script = document.createElement('script');
   script.src = 'https://sdk.mercadopago.com/js/v2';
@@ -1042,7 +1044,7 @@ const initCheckoutButton = () => {
         };
       });
       
-      const response = await fetch('http://localhost:3001/create_preference', {
+      const response = await fetch(`${url}/create_preference`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ items })
@@ -1063,6 +1065,7 @@ loadMercadoPagoSDK();
 initCheckoutButton();
 setCurrentYear();
 });
+
 document.getElementById("checkout-btn").addEventListener("click", checkout);
 function checkout() {
   console.log("checkout funcionando");
@@ -1071,7 +1074,7 @@ function checkout() {
     alert("El carrito está vacío");
     return;
   }
-  let url = window.location.origin;
+
   fetch(`${url}/create_preference`, {
     method: "POST",
     headers: {
