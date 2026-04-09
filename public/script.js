@@ -1042,7 +1042,7 @@ const initCheckoutButton = () => {
         };
       });
       
-      const response = await fetch('http://localhost:3000/create_preference', {
+      const response = await fetch('http://localhost:3001/create_preference', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ items })
