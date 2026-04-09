@@ -1071,8 +1071,8 @@ function checkout() {
     alert("El carrito está vacío");
     return;
   }
-
-  fetch("http://localhost:3001/create_preference", {
+  let url = window.location.origin;
+  fetch(`${url}/create_preference`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
