@@ -1017,7 +1017,7 @@ const loadMercadoPagoSDK = () => {
 };
 
 const initCheckoutButton = () => {
-  const checkoutBtn = document.querySelector('.cart-footer .btn-primary');
+  const checkoutBtn = document.querySelector('button[data-es="Proceder al Pago"]');
   if (!checkoutBtn) return;
   
   checkoutBtn.addEventListener('click', async (e) => {
