@@ -349,16 +349,13 @@ function initLanguageToggle() {
 function updateAllTranslations() {
   const t = translations[currentLanguage];
   
-  // Update nav subtitle
   const navSubtitle = document.getElementById('nav-subtitle');
   if (navSubtitle) navSubtitle.textContent = t.navSubtitle;
   
-  // Update all elements with data attributes
   document.querySelectorAll('[data-es]').forEach(el => {
     el.textContent = el.getAttribute(`data-${currentLanguage}`);
   });
   
-  // Update specific content
   const poemText = document.getElementById('poem-text');
   if (poemText) poemText.textContent = t.poemText;
   
@@ -368,7 +365,6 @@ function updateAllTranslations() {
   const bookDescription = document.getElementById('book-description');
   if (bookDescription) bookDescription.innerHTML = t.bookDescription;
   
-  // Re-render dynamic content
   renderProducts();
   renderReviews();
   updateCart();
@@ -507,7 +503,6 @@ function renderProducts() {
     `;
   }).join('');
   
-  // Add click handlers
   shopGrid.querySelectorAll('.product-card').forEach(card => {
     card.addEventListener('click', () => {
       const productId = card.dataset.productId;
@@ -529,7 +524,6 @@ function openProductModal(productId) {
   const title = currentLanguage === 'es' ? product.title : product.titleKr;
   const isComingSoon = product.comingSoon;
   
-  // Update modal content
   document.getElementById('modal-title').textContent = title;
   document.getElementById('modal-image').src = product.image || '/books/placeholder.jpg';
   document.getElementById('modal-image').alt = title;
@@ -540,7 +534,6 @@ function openProductModal(productId) {
   
   document.getElementById('modal-price').textContent = `$${formatPrice(product.price)}`;
   
-  // Description
   const descriptions = {
     '1': currentLanguage === 'es' ? t.book1Desc : t.book1Desc,
     '2': currentLanguage === 'es' ? t.book2Desc : t.book2Desc,
@@ -548,7 +541,6 @@ function openProductModal(productId) {
   };
   document.getElementById('modal-description').textContent = descriptions[productId] || '';
   
-  // Features for book 1
   const featuresContainer = document.getElementById('modal-features');
   if (productId === '1') {
     featuresContainer.innerHTML = `
@@ -571,7 +563,6 @@ function openProductModal(productId) {
     featuresContainer.innerHTML = '';
   }
   
-  // Show/hide cart section
   const cartSection = document.querySelector('.modal-cart-section');
   const comingSoonSection = document.getElementById('modal-coming-soon');
   const priceSection = document.querySelector('.modal-price-section');
@@ -586,13 +577,9 @@ function openProductModal(productId) {
     priceSection.classList.remove('hidden');
   }
   
-  // Reset quantity
   document.getElementById('qty-value').textContent = '1';
   
-  // Render reviews
   renderModalReviews(productId);
-  
-  // Render rating input stars
   renderRatingInput();
   
   modal.classList.add('open');
@@ -609,7 +596,6 @@ function renderModalReviews(productId) {
   const reviewsContainer = document.getElementById('modal-reviews');
   const starsContainer = document.getElementById('modal-stars');
   
-  // Calculate average
   const avgRating = reviews.length > 0 
     ? reviews.reduce((acc, r) => acc + r.rating, 0) / reviews.length 
     : 5;
@@ -617,13 +603,11 @@ function renderModalReviews(productId) {
   document.getElementById('modal-rating').textContent = avgRating.toFixed(1);
   document.getElementById('modal-review-count').textContent = `(${reviews.length})`;
   
-  // Render stars
   starsContainer.innerHTML = '';
   for (let i = 1; i <= 5; i++) {
     starsContainer.appendChild(createStarSVG(i <= Math.round(avgRating)));
   }
   
-  // Render reviews list
   reviewsContainer.innerHTML = reviews.map(review => `
     <div class="modal-review-item">
       <div class="modal-review-header">
@@ -742,7 +726,6 @@ function updateCart() {
   const totalItems = cart.reduce((acc, item) => acc + item.quantity, 0);
   const totalPrice = cart.reduce((acc, item) => acc + (item.price * item.quantity), 0);
   
-  // Update count
   if (cartCount) {
     cartCount.textContent = totalItems;
     if (totalItems > 0) {
@@ -752,12 +735,10 @@ function updateCart() {
     }
   }
   
-  // Update total
   if (cartTotal) {
     cartTotal.textContent = `$${formatPrice(totalPrice)}`;
   }
   
-  // Update items
   if (cartItems) {
     const t = translations[currentLanguage];
     
@@ -842,11 +823,9 @@ function renderReviews() {
   const t = translations[currentLanguage];
   const avgRating = siteReviews.reduce((acc, r) => acc + r.rating, 0) / siteReviews.length;
   
-  // Update average
   if (averageRating) averageRating.textContent = avgRating.toFixed(1);
   if (ratingCount) ratingCount.textContent = `(${siteReviews.length} ${t.reviews})`;
   
-  // Render stars
   if (averageStars) {
     averageStars.innerHTML = '';
     for (let i = 1; i <= 5; i++) {
@@ -854,7 +833,6 @@ function renderReviews() {
     }
   }
   
-  // Render review cards
   reviewsGrid.innerHTML = siteReviews.map((review, index) => {
     const name = currentLanguage === 'es' ? review.name : review.nameKr;
     const comment = currentLanguage === 'es' ? review.comment : review.commentKr;
@@ -897,11 +875,9 @@ function initContactForm() {
   form.addEventListener('submit', (e) => {
     e.preventDefault();
     
-    // Show success
     form.classList.add('hidden');
     successMessage.classList.remove('hidden');
     
-    // Reset after 3 seconds
     setTimeout(() => {
       form.reset();
       form.classList.remove('hidden');
@@ -990,28 +966,12 @@ function setCurrentYear() {
   }
 }
 
-// ===== Initialize Everything =====
-document.addEventListener('DOMContentLoaded', () => {
-  initSakuraPetals();
-  initMusicPlayer();
-  initLanguageToggle();
-  initMobileMenu();
-  initHeroBook();
-  initBookFlip();
-  initScrollAnimations();
-  renderProducts();
-  renderReviews();
-  initContactForm();
-  initModalListeners();
-  initCartListeners();
-  updateCart();
-
 // ===== MERCADO PAGO =====
 const loadMercadoPagoSDK = () => {
   const script = document.createElement('script');
   script.src = 'https://sdk.mercadopago.com/js/v2';
   script.onload = () => {
-    window.mp = new window.MercadoPago('APP_USR-aa6c9501-fd17-4d5c-bbb8-73aca9fa59b9',);
+    window.mp = new window.MercadoPago('APP_USR-aa6c9501-fd17-4d5c-bbb8-73aca9fa59b9');
   };
   document.body.appendChild(script);
 };
@@ -1042,7 +1002,7 @@ const initCheckoutButton = () => {
         };
       });
       
-      const response = await fetch('http://localhost:3001/create_preference', {
+      const response = await fetch('https://paginahan.onrender.com/create_preference', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ items })
@@ -1059,43 +1019,22 @@ const initCheckoutButton = () => {
   });
 };
 
-loadMercadoPagoSDK();
-initCheckoutButton();
-setCurrentYear();
+// ===== Initialize Everything =====
+document.addEventListener('DOMContentLoaded', () => {
+  initSakuraPetals();
+  initMusicPlayer();
+  initLanguageToggle();
+  initMobileMenu();
+  initHeroBook();
+  initBookFlip();
+  initScrollAnimations();
+  renderProducts();
+  renderReviews();
+  initContactForm();
+  initModalListeners();
+  initCartListeners();
+  updateCart();
+  setCurrentYear();
+  loadMercadoPagoSDK();
+  initCheckoutButton();
 });
-document.getElementById("checkout-btn").addEventListener("click", checkout);
-function checkout() {
-  console.log("checkout funcionando");
-
-  if (cart.length === 0) {
-    alert("El carrito está vacío");
-    return;
-  }
-
-  fetch("http://localhost:3000/create_preference", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      items: cart.map(item => ({
-        title: item.title,
-        unit_price: item.price, // ✅ CORREGIDO
-        quantity: item.quantity,
-      })),
-    }),
-  })
-    .then(res => res.json())
-    .then(data => {
-      if (data.id) {
-        window.location.href =
-          `https://www.mercadopago.com.ar/checkout/v1/redirect?pref_id=${data.id}`;
-      } else {
-        alert("Error al crear preferencia");
-      }
-    })
-    .catch(error => {
-      console.error("Error en checkout:", error);
-      alert("Error en el pago");
-    });
-}
