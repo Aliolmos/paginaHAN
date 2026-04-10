@@ -21,9 +21,9 @@ app.post("/create_preference", async (req, res) => {
     const preference = {
       items: req.body.items,
       back_urls: {
-        success: "http://localhost:3000/success",
-        failure: "http://localhost:3000/failure",
-        pending: "http://localhost:3000/pending",
+        success: "https://paginahan.onrender.com/success",
+        failure: "https://paginahan.onrender.com/failure",
+        pending: "https://paginahan.onrender.com/pending",
       },
       
     };
