@@ -3,6 +3,11 @@ dotenv.config();
 import express from "express";
 import cors from "cors";
 import pkg from "mercadopago";
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 const { MercadoPagoConfig, Preference } = pkg;
 
@@ -11,10 +16,11 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-
 const client = new MercadoPagoConfig({
-  accessToken: process.env.MERCADO_PAGO_ACCESS_TOKEN = "APP_USR-3465602578079606-040808-0ac4ff18c957fbad8149792f8bf33610-2565839522",
+  accessToken: process.env.MERCADO_PAGO_ACCESS_TOKEN,
 });
+
+// ... resto del código igual
 
 app.post("/create_preference", async (req, res) => {
   try {
