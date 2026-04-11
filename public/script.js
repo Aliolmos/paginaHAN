@@ -873,7 +873,11 @@ function initModalListeners() {
   const submitReviewBtn = document.getElementById('submit-review');
   
   if (closeBtn) {
-    closeBtn.addEventListener('click', closeProductModal);
+    closeBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      closeProductModal();
+    });
   }
   
   if (modal) {
