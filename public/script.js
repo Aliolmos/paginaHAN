@@ -672,39 +672,40 @@ function submitReview() {
     const product = products.find(p => p.id === currentProductId);
     const userName = currentLanguage === 'es' ? 'Usuario' : '사용자';
     
-    // PEGA TU URL AQUI (sin espacios antes ni después)
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwk8fIuDjL71UsKaEM_yYopmgzgr6zQBmsMrvhGTK_iK7DUbWY_6Wfi0IKLPpmia_uz1Q/exec';
     
-    // Enviar comentario a Google Sheets
+    const params = new URLSearchParams();
+    params.append('producto', product.title);
+    params.append('nombre', userName);
+    params.append('rating', userRating);
+    params.append('comentario', comment);
+    params.append('fecha', new Date().toLocaleString());
+    
     fetch(SCRIPT_URL, {
       method: 'POST',
-      body: new URLSearchParams({
-        producto: product.title,
-        nombre: userName,
+      body: params
+    })
+    .then(response => {
+      console.log('Comentario enviado:', response);
+      
+      const newReview = {
+        id: Date.now(),
+        name: userName,
         rating: userRating,
-        comentario: comment,
-        fecha: new Date().toLocaleString()
-      })
-    }).catch(err => console.log('Error guardando:', err));
-    
-    // Limpiar
-    commentInput.value = '';
-    userRating = 0;
-    renderRatingInput();
-    
-    // Agregar el comentario localmente también
-    const newReview = {
-      id: Date.now(),
-      name: userName,
-      rating: userRating,
-      comment: comment
-    };
-    
-    if (!productReviews[currentProductId]) {
-      productReviews[currentProductId] = [];
-    }
-    productReviews[currentProductId].unshift(newReview);
-    renderModalReviews(currentProductId);
+        comment: comment
+      };
+      
+      if (!productReviews[currentProductId]) {
+        productReviews[currentProductId] = [];
+      }
+      productReviews[currentProductId].unshift(newReview);
+      
+      commentInput.value = '';
+      userRating = 0;
+      renderRatingInput();
+      renderModalReviews(currentProductId);
+    })
+    .catch(error => console.error('Error:', error));
   }
 }
 
