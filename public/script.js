@@ -927,6 +927,7 @@ function initCartListeners() {
   if (cartBtn) {
     cartBtn.addEventListener('click', (e) => {
       e.preventDefault();
+      e.stopPropagation();
       toggleCart();
     });
   }
@@ -938,6 +939,13 @@ function initCartListeners() {
   if (cartOverlay) {
     cartOverlay.addEventListener('click', toggleCart);
   }
+}
+
+// Llamar a initCartListeners cuando la página carga
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initCartListeners);
+} else {
+  initCartListeners();
 }
 
 // ===== Set Current Year =====
@@ -1036,7 +1044,6 @@ document.addEventListener('DOMContentLoaded', () => {
   renderProducts();
   renderReviews();
   initContactForm();
-  initCartListeners();
   updateCart();
   setCurrentYear();
   loadMercadoPagoSDK();
