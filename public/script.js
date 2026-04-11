@@ -538,6 +538,7 @@ function openProductModal(productId) {
   renderModalReviews(productId);
   renderRatingInput();
   cargarComentariosDelServidor(productId);
+  initModalListeners();
   modal.classList.add('open');
 }
 
@@ -1035,7 +1036,6 @@ document.addEventListener('DOMContentLoaded', () => {
   renderProducts();
   renderReviews();
   initContactForm();
-  initModalListeners();
   initCartListeners();
   updateCart();
   setCurrentYear();
