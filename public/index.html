@@ -430,9 +430,32 @@ cuando susurran "te amo" y el tiempo parece detenerse.</p>
               <!-- Stars rendered by JS -->
             </div>
             <span class="rating-number" id="average-rating">4.8</span>
-            <span class="rating-count" id="rating-count">(4 reseñas)</span>
+            <span class="rating-count" id="rating-count">(0 reseñas)</span>
           </div>
         </div>
+
+        <!-- Formulario de Reseña -->
+<div class="reviews-form-wrapper fade-in-up" style="background: #f8fafc; padding: 30px; border-radius: 12px; margin-bottom: 40px;">
+  <h3 style="margin-bottom: 20px;" data-es="Deja tu reseña" data-kr="리뷰 남기기">Deja tu reseña</h3>
+  <form id="resenas-form" style="display: grid; gap: 15px;">
+    <input type="text" id="resenas-nombre" placeholder="Tu nombre" required style="padding: 10px; border: 1px solid #e2e8f0; border-radius: 6px;">
+    <input type="email" id="resenas-email" placeholder="Tu email" required style="padding: 10px; border: 1px solid #e2e8f0; border-radius: 6px;">
+    <select id="resenas-rating" required style="padding: 10px; border: 1px solid #ec4899; border-radius: 6px;">
+      <option value="">Selecciona tu calificación</option>
+      <option value="5">⭐⭐⭐⭐⭐ Excelente</option>
+      <option value="4">⭐⭐⭐⭐ Muy Bueno</option>
+      <option value="3">⭐⭐⭐ Bueno</option>
+      <option value="2">⭐⭐ Aceptable</option>
+      <option value="1">⭐ Pobre</option>
+    </select>
+    <textarea id="resenas-comentario" placeholder="Tu comentario..." rows="4" required style="padding: 10px; border: 1px solid #e2e8f0; border-radius: 6px;"></textarea>
+    <button type="submit" class="btn btn-primary" data-es="Enviar Reseña" data-kr="리뷰 보내기">Enviar Reseña</button>
+  </form>
+</div>
+
+<div class="reviews-grid" id="reviews-grid">
+  <!-- Reviews will be rendered by JavaScript -->
+</div>
         
         <div class="reviews-grid" id="reviews-grid">
           <!-- Reviews will be rendered by JavaScript -->
