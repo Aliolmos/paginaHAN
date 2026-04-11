@@ -669,9 +669,33 @@ function submitReview() {
   const comment = commentInput.value.trim();
   
   if (userRating > 0 && comment && currentProductId) {
+    const product = products.find(p => p.id === currentProductId);
+    const userName = currentLanguage === 'es' ? 'Usuario' : '사용자';
+    
+    // PEGA TU URL AQUI (sin espacios antes ni después)
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwk8fIuDjL71UsKaEM_yYopmgzgr6zQBmsMrvhGTK_iK7DUbWY_6Wfi0IKLPpmia_uz1Q/exec';
+    
+    // Enviar comentario a Google Sheets
+    fetch(SCRIPT_URL, {
+      method: 'POST',
+      body: new URLSearchParams({
+        producto: product.title,
+        nombre: userName,
+        rating: userRating,
+        comentario: comment,
+        fecha: new Date().toLocaleString()
+      })
+    }).catch(err => console.log('Error guardando:', err));
+    
+    // Limpiar
+    commentInput.value = '';
+    userRating = 0;
+    renderRatingInput();
+    
+    // Agregar el comentario localmente también
     const newReview = {
       id: Date.now(),
-      name: currentLanguage === 'es' ? 'Usuario' : '사용자',
+      name: userName,
       rating: userRating,
       comment: comment
     };
@@ -680,10 +704,6 @@ function submitReview() {
       productReviews[currentProductId] = [];
     }
     productReviews[currentProductId].unshift(newReview);
-    
-    commentInput.value = '';
-    userRating = 0;
-    renderRatingInput();
     renderModalReviews(currentProductId);
   }
 }
