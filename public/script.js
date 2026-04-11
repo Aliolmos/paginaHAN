@@ -4,11 +4,7 @@ let cart = [];
 let currentProductId = null;
 let userRating = 0;
 let productReviews = {
-  '1': [
-    { id: 1, name: 'Maria G.', rating: 5, comment: 'Un libro hermoso que conecta dos culturas de manera unica. Las canciones son increibles.' },
-    { id: 2, name: '김지훈', rating: 5, comment: '정말 감동적인 시집입니다. QR 코드로 노래를 들을 수 있어서 더욱 특별해요.' },
-    { id: 3, name: 'Carlos R.', rating: 4, comment: 'Excelente calidad y muy emotivo. Lo recomiendo para amantes de la poesia.' },
-  ],
+  '1': [],
   '2': [],
   '3': []
 };
@@ -208,46 +204,6 @@ const products = [
     stock: 0,
     image: '',
     comingSoon: true
-  }
-];
-
-// ===== Reviews Data =====
-const siteReviews = [
-  {
-    id: 1,
-    name: 'Maria Garcia',
-    nameKr: '마리아 가르시아',
-    rating: 5,
-    comment: 'Los poemas me llegaron al corazon. Cada pagina es como un abrazo para el alma. Definitivamente mi nueva lectura favorita.',
-    commentKr: '시가 제 마음에 깊이 와닿았습니다. 모든 페이지가 영혼을 위한 포옹 같아요. 확실히 제 새로운 최애 책입니다.',
-    date: '2024-01-15'
-  },
-  {
-    id: 2,
-    name: 'Carlos Mendoza',
-    nameKr: '카를로스 멘도사',
-    rating: 5,
-    comment: 'Una coleccion extraordinaria. La forma en que las palabras fluyen es simplemente magica. Regalo perfecto para amantes de la poesia.',
-    commentKr: '놀라운 컬렉션입니다. 단어가 흐르는 방식이 그저 마법 같아요. 시를 사랑하는 이들에게 완벽한 선물입니다.',
-    date: '2024-02-20'
-  },
-  {
-    id: 3,
-    name: 'Ana Sofia Lee',
-    nameKr: '아나 소피아 리',
-    rating: 4,
-    comment: 'Hermosos versos que capturan emociones universales. El diseno del libro es tan elegante como su contenido.',
-    commentKr: '보편적인 감정을 담아낸 아름다운 시. 책의 디자인도 내용만큼 우아합니다.',
-    date: '2024-03-10'
-  },
-  {
-    id: 4,
-    name: 'Roberto Kim',
-    nameKr: '로베르토 김',
-    rating: 5,
-    comment: 'Cada poema es una pequena joya. Me encontre releyendo mis favoritos una y otra vez. Altamente recomendado.',
-    commentKr: '모든 시가 작은 보석입니다. 제가 좋아하는 것들을 몇 번이고 다시 읽게 되었어요. 강력 추천합니다.',
-    date: '2024-03-25'
   }
 ];
 
@@ -581,7 +537,7 @@ function openProductModal(productId) {
   
   renderModalReviews(productId);
   renderRatingInput();
-  
+  cargarComentariosDelServidor(productId);
   modal.classList.add('open');
 }
 
@@ -1034,6 +990,34 @@ const initCheckoutButton = () => {
     }
   });
 };
+
+// ===== Cargar comentarios de Google Sheets =====
+function cargarComentariosDelServidor(productId) {
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwk8fIuDjL71UsKaEM_yYopmgzgr6zQBmsMrvhGTK_iK7DUbWY_6Wfi0IKLPpmia_uz1Q/exec';
+  
+  fetch(SCRIPT_URL)
+    .then(res => res.json())
+    .then(comentarios => {
+      const product = products.find(p => p.id === productId);
+      
+      // Filtrar comentarios de este producto
+      const comentariosDelProducto = comentarios
+        .filter(c => c.producto && c.producto.includes(product.title))
+        .map(c => ({
+          id: Date.now(),
+          name: c.nombre,
+          rating: parseInt(c.rating) || 0,
+          comment: c.comentario
+        }));
+      
+      // Guardar en productReviews
+      productReviews[productId] = comentariosDelProducto;
+      
+      // Renderizar
+      renderModalReviews(productId);
+    })
+    .catch(err => console.log('Error cargando comentarios:', err));
+}
 
 // ===== Initialize Everything =====
 document.addEventListener('DOMContentLoaded', () => {
