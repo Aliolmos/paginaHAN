@@ -789,6 +789,66 @@ function toggleCart() {
   }
 }
 
+// ===== Cargar Reseñas Generales =====
+let siteReviews = [];
+
+function cargarResenasDelServidor() {
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwk8fIuDjL71UsKaEM_yYopmgzgr6zQBmsMrvhGTK_iK7DUbWY_6Wfi0IKLPpmia_uz1Q/exec';
+  
+  fetch(SCRIPT_URL)
+    .then(res => res.json())
+    .then(data => {
+      if (data.resenas) {
+        siteReviews = data.resenas;
+        renderReviews();
+      }
+    })
+    .catch(err => console.log('Error cargando reseñas:', err));
+}
+
+function initResenasForm() {
+  const form = document.getElementById('resenas-form');
+  if (!form) return;
+  
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    
+    const nombre = document.getElementById('resenas-nombre').value.trim();
+    const email = document.getElementById('resenas-email').value.trim();
+    const rating = document.getElementById('resenas-rating').value;
+    const comentario = document.getElementById('resenas-comentario').value.trim();
+    
+    if (!nombre || !email || !rating || !comentario) {
+      alert(currentLanguage === 'es' ? 'Por favor completa todos los campos' : '모든 필드를 완성하세요');
+      return;
+    }
+    
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwk8fIuDjL71UsKaEM_yYopmgzgr6zQBmsMrvhGTK_iK7DUbWY_6Wfi0IKLPpmia_uz1Q/exec';
+    
+    const params = new URLSearchParams();
+    params.append('nombre', nombre);
+    params.append('email', email);
+    params.append('rating', rating);
+    params.append('comentario', comentario);
+    params.append('fecha', new Date().toLocaleString());
+    
+    fetch(SCRIPT_URL, {
+      method: 'POST',
+      body: params
+    })
+    .then(response => {
+      form.reset();
+      alert(currentLanguage === 'es' ? '¡Reseña enviada!' : '리뷰가 전송되었습니다!');
+      cargarResenasDelServidor();
+    })
+    .catch(error => console.error('Error:', error));
+  });
+}
+
+
+
+
+
 // ===== Render Reviews =====
 function renderReviews() {
   const reviewsGrid = document.getElementById('reviews-grid');
@@ -799,48 +859,53 @@ function renderReviews() {
   if (!reviewsGrid) return;
   
   const t = translations[currentLanguage];
-  const avgRating = siteReviews.reduce((acc, r) => acc + r.rating, 0) / siteReviews.length;
   
-  if (averageRating) averageRating.textContent = avgRating.toFixed(1);
-  if (ratingCount) ratingCount.textContent = `(${siteReviews.length} ${t.reviews})`;
-  
-  if (averageStars) {
-    averageStars.innerHTML = '';
-    for (let i = 1; i <= 5; i++) {
-      averageStars.appendChild(createStarSVG(i <= Math.round(avgRating)));
+  if (siteReviews.length === 0) {
+    if (averageRating) averageRating.textContent = '0.0';
+    if (ratingCount) ratingCount.textContent = `(0 ${t.reviews})`;
+  } else {
+    const avgRating = siteReviews.reduce((acc, r) => acc + parseInt(r.rating), 0) / siteReviews.length;
+    if (averageRating) averageRating.textContent = avgRating.toFixed(1);
+    if (ratingCount) ratingCount.textContent = `(${siteReviews.length} ${t.reviews})`;
+    
+    if (averageStars) {
+      averageStars.innerHTML = '';
+      for (let i = 1; i <= 5; i++) {
+        averageStars.appendChild(createStarSVG(i <= Math.round(avgRating)));
+      }
     }
   }
   
-  reviewsGrid.innerHTML = siteReviews.map((review, index) => {
-    const name = currentLanguage === 'es' ? review.name : review.nameKr;
-    const comment = currentLanguage === 'es' ? review.comment : review.commentKr;
-    const date = formatDate(review.date, currentLanguage);
-    
-    return `
-      <div class="review-card fade-in-up visible" style="animation-delay: ${index * 0.15}s">
-        <div class="review-quote-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V21c0 1 0 1 1 1z"></path>
-            <path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3c0 1 0 1 1 1z"></path>
-          </svg>
-        </div>
-        <p class="review-text">${comment}</p>
-        <div class="review-footer">
-          <div>
-            <p class="review-author">${name}</p>
-            <p class="review-date">${date}</p>
+  reviewsGrid.innerHTML = siteReviews.length === 0 
+    ? `<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #64748b;"><p>${currentLanguage === 'es' ? 'Sé el primero en dejar una reseña' : '첫 번째 리뷰를 남겨보세요'}</p></div>`
+    : siteReviews.map((review, index) => {
+      const name = review.nombre || (currentLanguage === 'es' ? 'Usuario' : '사용자');
+      const comment = review.comentario || '';
+      
+      return `
+        <div class="review-card fade-in-up visible" style="animation-delay: ${index * 0.15}s">
+          <div class="review-quote-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V21c0 1 0 1 1 1z"></path>
+              <path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3c0 1 0 1 1 1z"></path>
+            </svg>
           </div>
-          <div class="review-stars">
-            ${Array.from({length: 5}, (_, i) => 
-              `<svg viewBox="0 0 24 24" fill="${i < review.rating ? '#fbbf24' : 'none'}" stroke="${i < review.rating ? '#fbbf24' : 'rgba(100,116,139,0.3)'}" stroke-width="2">
-                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-              </svg>`
-            ).join('')}
+          <p class="review-text">${comment}</p>
+          <div class="review-footer">
+            <div>
+              <p class="review-author">${name}</p>
+            </div>
+            <div class="review-stars">
+              ${Array.from({length: 5}, (_, i) => 
+                `<svg viewBox="0 0 24 24" fill="${i < parseInt(review.rating) ? '#fbbf24' : 'none'}" stroke="${i < parseInt(review.rating) ? '#fbbf24' : 'rgba(100,116,139,0.3)'}" stroke-width="2">
+                  <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                </svg>`
+              ).join('')}
+            </div>
           </div>
         </div>
-      </div>
-    `;
-  }).join('');
+      `;
+    }).join('');
 }
 
 // ===== Contact Form =====
@@ -1042,8 +1107,10 @@ document.addEventListener('DOMContentLoaded', () => {
   initBookFlip();
   initScrollAnimations();
   renderProducts();
+  cargarResenasDelServidor();  // ← AGREGA ESTA LÍNEA
   renderReviews();
   initContactForm();
+  initResenasForm();  // ← AGREGA ESTA LÍNEA
   updateCart();
   setCurrentYear();
   loadMercadoPagoSDK();
